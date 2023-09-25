@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<title>盲盒抽奖</title>
+	<link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+
+	<div class="page">
+		<div class="title">盲盒抽奖</div>
+		<div id="wrapBox">
+			<ul id="digitalBox">
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+		</div>
+		<div class="btn"><span id="startBtn">点击开始</span></div>
+		<div class="history-box">
+			<ul id="historyList"></ul>
+		</div>
+	</div>
+
+	<!-- 加载 mTips start -->
+	<link rel="stylesheet" type="text/css" href="./js/Tips/mTips.css" />
+	<script type="text/javascript" src="./js/Tips/mTips.min.js"></script>
+	<!-- 加载 mTips end -->
+	<script type="text/javascript" src="./js/utils.js"></script>
+	<script type="text/javascript" src="./js/mDigital.js"></script>
+
+	<script type="text/javascript">
+		// 缩放
+		scalePage('#wrapBox');
+
+		//滚动抽奖
+		var historyArr = [];
+		var btn = document.getElementById('startBtn'),
+			history = document.getElementById('historyList'),
+			scrollDigital = new Digital({
+				el: '#digitalBox',
+				distance: 265,
+				duration: 4000,
+				interval: 800
+			});
+
+		var random = function () {
+			// 生成1到600之间的随机整数
+			const randomNum = Math.floor(Math.random() * 600) + 1;
+
+			// 使用字符串的 padStart 方法将其补齐到4位数
+			const paddedNum = randomNum.toString().padStart(4, '0');
+			return paddedNum;
+		};
+
+		var getNoRepeatRandom = function () {
+			var num = random();
+			if (historyArr.indexOf(num) !== -1) {
+				num = getNoRepeatRandom();
+			} else {
+				historyArr.push(num);
+			}
+			return num;
+		}
+
+		btn.onclick = function () {
+			var num = getNoRepeatRandom(); //模拟数据
+			console.log(historyArr, num);
+			btn.innerHTML = '正在抽奖中...';
+			scrollDigital.start(num, function () {
+				btn.innerHTML = '继续抽奖';
+				Tips.confirm({
+					content: '<strong class="number-strong">' + num + '</strong> <strong>恭喜您中奖了</strong>',
+					define: '',
+					cancel: '再抽一次',
+				});
+			});
+		};
+	</script>
+
+</body>
+
+</html>
