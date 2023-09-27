@@ -80,3 +80,9 @@ li {
   border-radius: 20px;
   cursor: pointer;
 }
+
+.music-player {
+  position: fixed;
+  left: 10px;
+  bottom: 20px;
+}

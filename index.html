@@ -13,7 +13,10 @@
 </head>
 
 <body>
-
+	<audio class="music-player" autoplay controls>
+		<source src="music/bg.ogg" type="audio/ogg">
+		<source src="music/bg.mp3" type="audio/mpeg" />
+	</audio>
 	<div class="page">
 		<div class="title">盲盒抽奖</div>
 		<div id="wrapBox">
@@ -70,8 +73,11 @@
 			}
 			return num;
 		}
-
+		
 		btn.onclick = function () {
+			if (btn.innerHTML === '正在抽奖中...' ) {
+				return;
+			}
 			var num = getNoRepeatRandom(); //模拟数据
 			console.log(historyArr, num);
 			btn.innerHTML = '正在抽奖中...';
